@@ -10,26 +10,6 @@ import { GiPathDistance, GiCircleForest, GiPlantRoots } from 'react-icons/gi';
 import Fuse from 'fuse.js'
 import Link from 'next/link'
 
-type LocationItem = {
-  id: number,
-  type: string,
-  projectName: string,
-  status: string,
-  forestOwnership: string,
-  forestOwner: string,
-  treeQuantity: number,
-  location: string,
-  coordinatesUrl: string,
-  latitude: number,
-  longitude: number,
-  startId: number,
-  endId: number,
-  startDate: Date,
-  comment: string,
-  area: string,
-  distanceToStartingPoint?: number,
-}
-
 type CustomerItem = {
   name: string,
   latitude: number,
@@ -45,9 +25,9 @@ export default function Home() {
   const fuse = new Fuse(Customers, options);
   const router = useRouter();
   const [query, setQuery] = useState('');
-  const [filteredLocations, setFilteredLocations] = useState<LocationItem[]>([]);
+  const [filteredLocations, setFilteredLocations] = useState<any[] | null>(null);
 
-  const handleCustomerSelect = (event: ChangeEvent) => {
+  const handleCustomerSelect = (event: { target: { value: string } }) => {
     const { value } = event.target;
     setQuery(value);
   };
@@ -55,9 +35,9 @@ export default function Home() {
   const customerResults = query ? fuse.search(query).map((item) => item.item) : Customers;
   const clearSelection = () => {
     setQuery('');
-    setFilteredLocations([])
+    setFilteredLocations(null)
   }
-  const getResults = (item:CustomerItem) => {
+  const getResults = (item: CustomerItem) => {
     setQuery(item.name);
     const results = geoDistance(Locations, item).slice(0, 3);
     setFilteredLocations(results);

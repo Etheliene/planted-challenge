@@ -1,17 +1,15 @@
 /**
  * Sorts a list of latitude/longitude points by their distance to a starting point.
  *
- * @param {Array<{latitude: number, longitude number, [key: string]: any;}>} pwoints - The list of points to sort.
- * @param {{latitude: number, longitude number}} startingPoint - The starting point to calculate distances from.
- * @returns {Array<{latitude: number, longitude number, distanceToStartingPoint: string}>} - The sorted list of points, including the distance to the starting point in kilometers for each point.
- *
  */
-const geoDistance = (
-  points: { latitude: number; longitude: number }[] | { [key: string]: any }[],
-  startingPoint: { latitude: number; longitude: number }
-) => {
+const geoDistance = (points: any[], startingPoint: { name?: string; latitude: any; longitude: any; }) => {
   // Calculate distance between two points using the Haversine formula
-  function calculateDistance(lat1:number, lon1:number, lat2:number, lon2:number) {
+  function calculateDistance(
+    lat1: number,
+    lon1: number,
+    lat2: number,
+    lon2: number
+  ) {
     const R = 6371; // Radius of the earth in km
     const dLat = toRad(lat2 - lat1);
     const dLon = toRad(lon2 - lon1);
@@ -27,7 +25,7 @@ const geoDistance = (
   }
 
   // Convert degrees to radians
-  function toRad(deg:number) {
+  function toRad(deg: number) {
     return deg * (Math.PI / 180);
   }
 
