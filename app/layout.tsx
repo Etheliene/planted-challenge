@@ -1,11 +1,12 @@
 import './globals.css'
 import Provider from './layout.provider';
+import PlantedNav from '@/components/NavBar';
 
 type RootLayoutProps = {
   children: React.ReactNode
 }
 
-const RootLayout = ({ children }:RootLayoutProps) => {
+const RootLayout = ({ children }: RootLayoutProps) => {
   return (
     <html lang="en">
       {/*
@@ -15,6 +16,9 @@ const RootLayout = ({ children }:RootLayoutProps) => {
       <head />
       <body>
         <Provider>
+          <header>
+            <PlantedNav />
+          </header>
           {children}
         </Provider>
       </body>
