@@ -1,7 +1,17 @@
-const geoDistance = (points, startingPoint) => {
+/**
+ * Sorts a list of latitude/longitude points by their distance to a starting point.
+ *
+ * @param {Array<{latitude: number, longitude number}>} points - The list of points to sort.
+ * @param {{latitude: number, longitude number}} startingPoint - The starting point to calculate distances from.
+ * @returns {Array<{latitude: number, longitude number, distanceToStartingPoint: string}>} - The sorted list of points, including the distance to the starting point in kilometers for each point.
+ *
+ */
+const geoDistance = (
+  points: { latitude: number; longitude: number }[],
+  startingPoint: { latitude: number; longitude: number }
+) => {
   // Calculate distance between two points using the Haversine formula
-  // found on 
-  function calculateDistance(lat1, lon1, lat2, lon2) {
+  function calculateDistance(lat1:number, lon1:number, lat2:number, lon2:number) {
     const R = 6371; // Radius of the earth in km
     const dLat = toRad(lat2 - lat1);
     const dLon = toRad(lon2 - lon1);
@@ -17,7 +27,7 @@ const geoDistance = (points, startingPoint) => {
   }
 
   // Convert degrees to radians
-  function toRad(deg) {
+  function toRad(deg:number) {
     return deg * (Math.PI / 180);
   }
 
@@ -33,17 +43,17 @@ const geoDistance = (points, startingPoint) => {
     return {
       point: point,
       distance: distance,
-      distanceToStartingPoint: distance.toFixed(2)
+      distanceToStartingPoint: distance.toFixed(2),
     };
   });
 
-  // Sort distances in ascending order
+  // Sort distances in ascending order, so the closest distance comes first
   distances.sort((a, b) => a.distance - b.distance);
 
-  // Return sorted and modified list of points which is going to include the distance in kilometers 
+  // Return sorted and modified list of points which is going to include the distance to the starting point
   return distances.map((item) => ({
     ...item.point,
-    distanceToStartingPoint: item.distanceToStartingPoint
+    distanceToStartingPoint: item.distanceToStartingPoint,
   }));
 };
 export default geoDistance;
