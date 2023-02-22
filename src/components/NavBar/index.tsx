@@ -15,7 +15,6 @@ const PlantedNav = () => {
             </Navbar.Brand>
             <Navbar.Content hideIn="xs">
                 <Navbar.Link href="/" isActive={checkActiveRoute('/')}>Example</Navbar.Link>
-                <Navbar.Link href="/documentation" isActive={checkActiveRoute('/documentation')}>Documentation</Navbar.Link>
             </Navbar.Content>
         </Navbar>
     )

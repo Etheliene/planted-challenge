@@ -1,13 +1,13 @@
 /**
  * Sorts a list of latitude/longitude points by their distance to a starting point.
  *
- * @param {Array<{latitude: number, longitude number}>} points - The list of points to sort.
+ * @param {Array<{latitude: number, longitude number, [key: string]: any;}>} pwoints - The list of points to sort.
  * @param {{latitude: number, longitude number}} startingPoint - The starting point to calculate distances from.
  * @returns {Array<{latitude: number, longitude number, distanceToStartingPoint: string}>} - The sorted list of points, including the distance to the starting point in kilometers for each point.
  *
  */
 const geoDistance = (
-  points: { latitude: number; longitude: number }[],
+  points: { latitude: number; longitude: number }[] | { [key: string]: any }[],
   startingPoint: { latitude: number; longitude: number }
 ) => {
   // Calculate distance between two points using the Haversine formula

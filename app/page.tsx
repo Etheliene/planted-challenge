@@ -1,40 +1,63 @@
 'use client'
-import React, { useState } from 'react'
+import React, { useState, ChangeEvent } from 'react'
 import Customers from '../data/customerLocations.json'
 import Locations from '../data/plantationProjects.json'
 import { useRouter } from 'next/navigation'
 import { Button, Input, Container, Row, Col, Card, Grid, Badge, Text } from '@nextui-org/react'
 import geoDistance from '@/utilities/geoDistance'
-import { BsFillTreeFill } from 'react-icons/bs';
 import { GoLocation } from 'react-icons/go';
 import { GiPathDistance, GiCircleForest, GiPlantRoots } from 'react-icons/gi';
 import Fuse from 'fuse.js'
 import Link from 'next/link'
 
+type LocationItem = {
+  id: number,
+  type: string,
+  projectName: string,
+  status: string,
+  forestOwnership: string,
+  forestOwner: string,
+  treeQuantity: number,
+  location: string,
+  coordinatesUrl: string,
+  latitude: number,
+  longitude: number,
+  startId: number,
+  endId: number,
+  startDate: Date,
+  comment: string,
+  area: string,
+  distanceToStartingPoint?: number,
+}
 
+type CustomerItem = {
+  name: string,
+  latitude: number,
+  longitude: number,
+}
 
 export default function Home() {
   const options = {
-    includeScore: true,
-    keys: ['name']
+    keys: ['name'],
+    threshold: 0.45
 
   }
   const fuse = new Fuse(Customers, options);
   const router = useRouter();
   const [query, setQuery] = useState('');
-  const [filteredLocations, setFilteredLocations] = useState(null);
+  const [filteredLocations, setFilteredLocations] = useState<LocationItem[]>([]);
 
-  const handleCustomerSelect = ({ target = {} }) => {
-    const { value } = target;
+  const handleCustomerSelect = (event: ChangeEvent) => {
+    const { value } = event.target;
     setQuery(value);
   };
 
   const customerResults = query ? fuse.search(query).map((item) => item.item) : Customers;
   const clearSelection = () => {
     setQuery('');
-    setFilteredLocations(null)
+    setFilteredLocations([])
   }
-  const getResults = (item) => {
+  const getResults = (item:CustomerItem) => {
     setQuery(item.name);
     const results = geoDistance(Locations, item).slice(0, 3);
     setFilteredLocations(results);
